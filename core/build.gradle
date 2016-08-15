@@ -1,0 +1,8 @@
+description = "OSGi Unit Testing"
+
+dependencies {
+    compile 'junit:junit:4.+'
+    compile 'org.osgi:org.osgi.core:4.+'
+}
+
+
