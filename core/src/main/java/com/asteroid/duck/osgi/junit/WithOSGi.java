@@ -13,20 +13,17 @@ import org.osgi.framework.launch.Framework;
  * A JUnit rule used to access and control an OSGi Framework
  */
 public class WithOSGi extends ExternalResource {
-    private final Scope scope;
+    Framework framework;
 
-    public WithOSGi(final Scope scope) {
-        this.scope = scope;
-    }
+    public WithOSGi() {
 
-    @Override
-    public Statement apply(final Statement base, final Description description) {
-        return new ConfigurableStatement(base, description);
     }
 
     @Override
     protected void before() throws Throwable {
-        super.before();
+        FrameworkBuilder builder = new FrameworkBuilder();
+        framework = builder.build();
+        framework.start();
     }
 
     /**
@@ -34,7 +31,7 @@ public class WithOSGi extends ExternalResource {
      * @return An instance of the OSGi framework
      */
     public Framework getFramework() {
-        throw new UnsupportedOperationException();
+        return framework;
     }
 
     @Override

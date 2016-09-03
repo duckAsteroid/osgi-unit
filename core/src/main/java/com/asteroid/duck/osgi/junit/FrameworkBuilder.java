@@ -12,18 +12,13 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * A builder for initialising instances of {@link Framework}
+ * A builder for initialising instances of an OSGi {@link Framework}
  */
 public class FrameworkBuilder {
-    /** The name of the framework to load */
-    private String frameworkName;
+
     /** Configuration properties for the framework */
     private Map<String, String> configuration = new HashMap<>();
 
-    public FrameworkBuilder withName(String frameworkName) {
-        this.frameworkName = frameworkName;
-        return this;
-    }
 
     public FrameworkBuilder withConfig(Map<String, String> cfg) {
         this.configuration = cfg;

@@ -1,0 +1,26 @@
+description = 'Gradle build plugin for osgi-unit capable projects'
+
+
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+
+publishing {
+    repositories {
+        maven {
+            // change to point to your repo, e.g. http://my.org/repo
+            url "$parent.buildDir/repo"
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'osgi-unit-gradle'
+
+            from components.java
+        }
+    }
+}
