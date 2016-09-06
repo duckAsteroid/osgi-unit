@@ -7,17 +7,12 @@ apply plugin: 'maven-publish'
 dependencies {
     compile gradleApi()
     compile localGroovy()
+    compile project(':core')
 }
 
 publishing {
-    repositories {
-        maven {
-            // change to point to your repo, e.g. http://my.org/repo
-            url "$parent.buildDir/repo"
-        }
-    }
     publications {
-        mavenJava(MavenPublication) {
+        gradlePlugin(MavenPublication) {
             artifactId 'osgi-unit-gradle'
 
             from components.java

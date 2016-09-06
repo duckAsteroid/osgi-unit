@@ -1,14 +1,15 @@
 description = 'An example bundle'
+group = 'com.asteroid.duck'
 version='1.0.1'
+apply plugin: 'java'
 
 // The 'main' part of this project is an OSGi bundle
 apply plugin: 'osgi'
 
+
 buildscript {
     repositories {
-        maven {
-            url "$parent.buildDir/repo"
-        }
+        mavenLocal()
     }
     dependencies {
         classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.0'
@@ -16,18 +17,22 @@ buildscript {
 }
 apply plugin: 'com.asteroid.duck.osgi.junit'
 
+repositories {
+    mavenCentral()
+}
+
 // the 'test' in this project uses OSGi
-
 dependencies {
-
-    compile 'org.osgi:org.osgi.core:4.+'
-    testCompile project(':core')
-    testRuntime 'org.apache.felix:org.apache.felix.framework:4.2.1'
+    compile 'org.osgi:org.osgi.core:6.0.0'
+    testCompile 'junit:junit:4.+'
+    testFramework 'org.apache.felix:org.apache.felix.framework:5.4.0'
 }
 
 jar {
     manifest {
         instructionReplace 'Bundle-Activator', 'com.asteroid.duck.osgi.test.impl.Activator'
+        instructionReplace 'Bundle-Name', "$project.description"
+        //instructionReplace 'Bundle-SymbolicName', ""
         instruction 'Private-Package', 'com.asteroid.duck.osgi.test.impl'
     }
 }

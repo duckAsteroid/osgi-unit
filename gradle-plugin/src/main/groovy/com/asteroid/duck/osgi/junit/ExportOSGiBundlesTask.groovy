@@ -9,9 +9,20 @@ import org.gradle.api.tasks.TaskAction
  */
 class ExportOSGiBundlesTask extends DefaultTask {
     @TaskAction
-    def hello() {
-        def file = project.file("$project.buildDir/hello.txt")
-        file.parentFile.mkdirs()
-        file.write "Hello!"
+    def exportBundlesFile() {
+        // pathTxt will hold the content of our JARs for the runtime
+        def pathTxt = ""
+
+        // add the main JAR for this project
+        pathTxt += project.jar.archivePath.absoluteFile.path + "\n"
+        // add the test JAR for this project
+        pathTxt += project.testJar.archivePath.absoluteFile.path + "\n"
+
+        // add each JAR from testRuntime configuration
+        project.configurations.testRuntime.each {
+            pathTxt += it.absoluteFile.path + "\n"
+        }
+
+        new File(project.buildDir, "gradle.testRuntime.path").text = pathTxt
     }
 }
