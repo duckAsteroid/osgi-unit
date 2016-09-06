@@ -9,6 +9,10 @@ import org.gradle.jvm.tasks.Jar
  * A plugin class that adds OSGi JUnit tasks and capabilities to a project
  */
 class OSGiJUnitPlugin implements Plugin<Project> {
+    static final String GROUP = "com.asteroid.duck";
+    static final String ARTIFACT = "osgi-unit-gradle";
+    static final String VERSION = "1.0.0";
+
     void apply(Project project) {
         project.configure(project) {
             apply plugin: 'osgi'
@@ -16,6 +20,9 @@ class OSGiJUnitPlugin implements Plugin<Project> {
                 testFramework {
                     description = "Test OSGi framework classpath"
                 }
+            }
+            dependencies {
+                testCompile GROUP + ":" + ARTIFACT + ":" + VERSION
             }
         }
         // add our plugin to the project
@@ -28,9 +35,12 @@ class OSGiJUnitPlugin implements Plugin<Project> {
             classifier = 'tests'
             from project.sourceSets.test.output
             dependsOn project.testClasses
-            /*manifest = project.osgiManifest {
-                instruction 'Bundle-Vendor', 'Chris was ere'
-            }*/
+            manifest = project.osgiManifest {
+                    classesDir = project.sourceSets.test.output.classesDir
+                    classpath = project.sourceSets.test.runtimeClasspath
+                    instructionReplace 'Bundle-Description', project.description
+                    instructionReplace 'Bundle-SymbolicName', project.jar.name + classifier
+            }
         }
 
         // add a task to export the required JAR names to a file for starting the OSGi framework

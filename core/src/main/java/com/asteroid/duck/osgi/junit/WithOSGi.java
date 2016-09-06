@@ -4,6 +4,7 @@
  */
 package com.asteroid.duck.osgi.junit;
 
+import com.asteroid.duck.osgi.FrameworkBuilder;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;

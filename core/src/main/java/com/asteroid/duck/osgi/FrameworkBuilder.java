@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Dr. Chris Senior.
  * See LICENSE.txt for licensing terms
  */
-package com.asteroid.duck.osgi.junit;
+package com.asteroid.duck.osgi;
 
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;

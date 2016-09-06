@@ -4,9 +4,11 @@ subprojects {
     version = '1.0.0'
 
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
 
     repositories {
         mavenCentral()
+        mavenLocal()
     }
 
     dependencies {

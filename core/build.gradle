@@ -3,7 +3,18 @@ description = "OSGi Unit Testing"
 dependencies {
     compile 'junit:junit:4.+'
     compile 'org.osgi:org.osgi.core:4.+'
+    compile 'org.slf4j:slf4j-api:1.6.1'
     testRuntime 'org.apache.felix:org.apache.felix.framework:4.2.1'
+    testRuntime 'org.slf4j:slf4j-jdk14:1.6.1'
 }
 
+publishing {
+    publications {
+        gradlePlugin(MavenPublication) {
+            artifactId 'osgi-unit-gradle'
+
+            from components.java
+        }
+    }
+}
 

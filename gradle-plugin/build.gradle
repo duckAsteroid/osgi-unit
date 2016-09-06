@@ -2,7 +2,7 @@ description = 'Gradle build plugin for osgi-unit capable projects'
 
 
 apply plugin: 'groovy'
-apply plugin: 'maven-publish'
+
 
 dependencies {
     compile gradleApi()

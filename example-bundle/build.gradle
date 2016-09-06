@@ -18,6 +18,7 @@ buildscript {
 apply plugin: 'com.asteroid.duck.osgi.junit'
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
