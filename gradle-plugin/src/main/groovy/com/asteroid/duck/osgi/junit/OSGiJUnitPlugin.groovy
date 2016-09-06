@@ -40,6 +40,7 @@ class OSGiJUnitPlugin implements Plugin<Project> {
                     classpath = project.sourceSets.test.runtimeClasspath
                     instructionReplace 'Bundle-Description', project.description
                     instructionReplace 'Bundle-SymbolicName', project.jar.name + classifier
+                    instructionReplace 'Fragment-Host', project.group + '.' + project.name
             }
         }
 
