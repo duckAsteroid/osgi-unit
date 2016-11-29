@@ -4,17 +4,19 @@
  */
 package com.asteroid.duck.osgi.junit;
 
-import com.asteroid.duck.osgi.FrameworkBuilder;
+import com.asteroid.duck.osgi.FrameworkHolder;
 import org.junit.rules.ExternalResource;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.launch.Framework;
+
+import static org.junit.Assert.fail;
 
 /**
  * A JUnit rule used to access and control an OSGi Framework
  */
 public class WithOSGi extends ExternalResource {
-    Framework framework;
+    private Framework framework = null;
 
     public WithOSGi() {
 
@@ -22,9 +24,8 @@ public class WithOSGi extends ExternalResource {
 
     @Override
     protected void before() throws Throwable {
-        FrameworkBuilder builder = new FrameworkBuilder();
-        framework = builder.build();
-        framework.start();
+        super.before();
+        framework = FrameworkHolder.SINGLETON.getTestFramework();
     }
 
     /**
@@ -32,7 +33,24 @@ public class WithOSGi extends ExternalResource {
      * @return An instance of the OSGi framework
      */
     public Framework getFramework() {
+        if (framework == null) {
+            fail("No OSGi framework available");
+        }
         return framework;
+    }
+
+
+    public Bundle getTestBundle() {
+        return FrameworkHolder.getTestBundleFrom(getFramework());
+    }
+
+    /**
+     * Access the bundle context of the test bundle
+     *
+     * @return The test bundle context
+     */
+    public BundleContext getTestBundleContext() {
+        return getTestBundle().getBundleContext();
     }
 
     @Override
@@ -40,24 +58,5 @@ public class WithOSGi extends ExternalResource {
         super.after();
     }
 
-    /**
-     * A statement to extract configuration
-     */
-    public class ConfigurableStatement extends Statement {
 
-        private final Statement base;
-        private final Description description;
-
-        public ConfigurableStatement(final Statement base, final Description description) {
-            this.base = base;
-            this.description = description;
-        }
-
-        @Override
-        public void evaluate() throws Throwable {
-            // get configuration data from the description
-
-            base.evaluate();
-        }
-    }
 }

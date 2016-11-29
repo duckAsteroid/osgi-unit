@@ -1,31 +1,30 @@
 package com.asteroid.duck.osgi;
 
-import org.osgi.framework.*;
+import com.asteroid.duck.osgi.log.Logger;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
 import org.osgi.framework.launch.Framework;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static com.asteroid.duck.osgi.Utils.isFragment;
 
 /**
  * Installs a list of bundles into a framework and starts them
  */
 public class BundleStarter {
     /** Logging */
-    private static final Logger LOG = LoggerFactory.getLogger(BundleStarter.class);
+    private static final Logger LOG = Logger.getLogger(BundleStarter.class);
     /** The OSGi framework to install the bundles into */
     private final Framework osgiFramework;
-    /** A list of bundles to install */
-    private List<String> bundleLocations = new ArrayList<String>();
     /** If true then failure to install a bundle is an error. Default false */
     private boolean failOnInstall = false;
     /** If true then failure to start a bundle is an error. Default false */
     private boolean failOnStart = false;
-    /** A list of the installed bundles */
-    private List<Bundle> installed = null;
-    /** A list of the started bundles */
-    private List<Bundle> started = null;
 
     public BundleStarter(final Framework osgiFramework) {
         if (osgiFramework == null) {
@@ -38,20 +37,20 @@ public class BundleStarter {
      * Attempts to install the bundles from the bundle locations
      * @throws IllegalStateException If bundles are already installed
      */
-    public synchronized void installBundles() {
-        if (installed != null) {
-            throw new IllegalStateException("Bundles already installed");
-        }
-        // start installing bundles
+    public synchronized List<Bundle> installBundles(List<String> bundleLocations) {
         BundleContext ctx = osgiFramework.getBundleContext();
-        installed = new ArrayList<Bundle>();
+        ArrayList<Bundle> installed = new ArrayList<Bundle>();
         for(String location : bundleLocations) {
             try {
+                File bundleFile = new File(location);
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Installing "+location);
                 }
-                Bundle bundle = ctx.installBundle(location);
+                Bundle bundle = ctx.installBundle(bundleFile.toURI().toString());
                 installed.add(bundle);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Installed " + location);
+                }
             } catch (BundleException e) {
                 LOG.error("Error installing "+location, e);
                 if (failOnInstall) {
@@ -59,20 +58,26 @@ public class BundleStarter {
                 }
             }
         }
+        return Collections.unmodifiableList(installed);
     }
 
     /**
      * Start all the installed bundles
      * @throws IllegalStateException If the bundles are not installed
      */
-    public synchronized void startBundles() {
+    public synchronized List<Bundle> startBundles(List<Bundle> installed) {
         if (installed == null) {
             throw new IllegalStateException("Bundles not installed");
         }
-        started = new ArrayList<Bundle>();
+        ArrayList<Bundle> started = new ArrayList<Bundle>();
         for(Bundle bundle : installed ) {
             try {
-                bundle.start();
+                if (!isFragment(bundle)) {
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Starting " + bundle);
+                    }
+                    bundle.start();
+                }
                 started.add(bundle);
             } catch (BundleException e) {
                 LOG.error("Error starting "+bundle, e);
@@ -81,5 +86,8 @@ public class BundleStarter {
                 }
             }
         }
+        return Collections.unmodifiableList(started);
     }
+
+
 }

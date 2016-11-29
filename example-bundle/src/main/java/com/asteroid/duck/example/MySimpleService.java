@@ -2,7 +2,7 @@
  * Copyright (c) 2016 Dr. Chris Senior.
  * See LICENSE.txt for licensing terms
  */
-package com.asteroid.duck.osgi.test;
+package com.asteroid.duck.example;
 
 /**
  * An extremely simple service API for testing

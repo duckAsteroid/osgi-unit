@@ -10,12 +10,14 @@ apply plugin: 'osgi'
 buildscript {
     repositories {
         mavenLocal()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.0'
     }
 }
 apply plugin: 'com.asteroid.duck.osgi.junit'
+
 
 repositories {
     mavenLocal()
@@ -24,16 +26,20 @@ repositories {
 
 // the 'test' in this project uses OSGi
 dependencies {
-    compile 'org.osgi:org.osgi.core:6.0.0'
+    compile 'org.osgi:org.osgi.core:4.+'
     testCompile 'junit:junit:4.+'
     testFramework 'org.apache.felix:org.apache.felix.framework:5.4.0'
 }
 
 jar {
     manifest {
-        instructionReplace 'Bundle-Activator', 'com.asteroid.duck.osgi.test.impl.Activator'
+        instructionReplace 'Bundle-Activator', 'com.asteroid.duck.example.impl.Activator'
         instructionReplace 'Bundle-Name', "$project.description"
-        //instructionReplace 'Bundle-SymbolicName', ""
-        instruction 'Private-Package', 'com.asteroid.duck.osgi.test.impl'
+        instruction 'Private-Package', 'com.asteroid.duck.example.impl'
     }
+}
+
+test {
+    systemProperty 'felix.cache.locking', false
+    //systemProperty 'osgi-unit.log.default', 'TRACE'
 }
