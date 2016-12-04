@@ -14,12 +14,21 @@ public class Logger {
     private enum Level {
         TRACE(0), DEBUG(5), INFO(10), EXCEPTION(15), ERROR(20), NONE(25);
 
+        /** An order for level comparison */
         private final int level;
 
         private Level(int order) {
             this.level = order;
         }
 
+        /**
+         * The levels have an order and higher levels "include" lower levels
+         * Does this level include the other level?
+         *
+         * @param other the other level
+         *
+         * @return true if this level includes the other
+         */
         public boolean includes(Level other) {
             return this.level <= other.level;
         }
@@ -75,11 +84,21 @@ public class Logger {
         return level;
     }
 
+    /**
+     * Get a logger for a given class
+     * Uses system properties to determine the current level
+     * @param klass the class
+     * @return a logger for the class
+     */
     public static Logger getLogger(Class<?> klass) {
-        Logger logger = new Logger(klass.getName());
-        return logger;
+        return getLogger(klass.getName());
     }
 
+    /**
+     * Get a logger for a name
+     * @param name the name of the logger
+     * @return a logger
+     */
     public static Logger getLogger(String name) {
         return new Logger(name);
     }
