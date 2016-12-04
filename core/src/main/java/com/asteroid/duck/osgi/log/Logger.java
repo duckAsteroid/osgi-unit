@@ -77,9 +77,7 @@ public class Logger {
 
     public static Logger getLogger(Class<?> klass) {
         Logger logger = new Logger(klass.getName());
-        if (logger.isTraceEnabled()) {
-
-        }
+        return logger;
     }
 
     public static Logger getLogger(String name) {
