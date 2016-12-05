@@ -5,6 +5,7 @@
 package com.asteroid.duck.osgi.junit;
 
 import com.asteroid.duck.osgi.FrameworkHolder;
+import com.asteroid.duck.osgi.log.Logger;
 import org.junit.rules.ExternalResource;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -16,6 +17,8 @@ import static org.junit.Assert.fail;
  * A JUnit rule used to access and control an OSGi Framework
  */
 public class WithOSGi extends ExternalResource {
+    /** Logging */
+    private static final Logger LOG = Logger.getLogger(WithOSGi.class);
     /** the framework */
     private Framework framework = null;
 
@@ -26,6 +29,9 @@ public class WithOSGi extends ExternalResource {
     protected void before() throws Throwable {
         super.before();
         framework = FrameworkHolder.SINGLETON.getTestFramework();
+        if (framework == null) {
+            fail("No OSGi framework available");
+        }
     }
 
     /**
@@ -33,9 +39,6 @@ public class WithOSGi extends ExternalResource {
      * @return An instance of the OSGi framework
      */
     public Framework getFramework() {
-        if (framework == null) {
-            fail("No OSGi framework available");
-        }
         return framework;
     }
 

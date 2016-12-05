@@ -42,4 +42,5 @@ jar {
 test {
     systemProperty 'felix.cache.locking', false
     //systemProperty 'osgi-unit.log.default', 'TRACE'
+    systemProperty 'osgi-unit.log.com.asteroid.duck.osgi.junit.WithOSGiService', 'TRACE'
 }

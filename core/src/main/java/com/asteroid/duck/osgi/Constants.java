@@ -19,17 +19,12 @@ public interface Constants {
     /** The name of our core jar file */
     String JAR_NAME = ARTIFACT + "-" + VERSION + ".jar";
 
-    /** System property that indicates the file that list the bundles to install */
+    /** System property that indicates the file that list the bundles to install or contains a path style (; separated) list of them */
     String RUNTIME_BUNDLES = "runtime.bundles";
     /** System property that indicates the test bundles symbolic name */
     String TEST_BUNDLE = "test.bundle";
-    /** System property to enable debug logging */
-    String LOG_DEBUG = "osgi-unit.log.debug";
-    /** System property to enable info logging */
-    String LOG_INFO = "osgi-unit.log.info";
-    /** System property to enable stack trace logging */
-    String LOG_STACK = "osgi-unit.log.stack";
-
+    /** System property to specify/override system package names */
     String SYSTEM_PACKAGES = "com.asteroid.duck.osgi.system.packages";
+    /** Prefix for runtime.bundles property to indicate the value is a path, rather than a filename */
     String PATH = "path=";
 }

@@ -10,9 +10,10 @@ package com.asteroid.duck.osgi.log;
 public class Logger {
     private static final Logger LOG = Logger.getLogger(Logger.class);
 
+
     /** logging level enum */
     private enum Level {
-        TRACE(0), DEBUG(5), INFO(10), EXCEPTION(15), ERROR(20), NONE(25);
+        TRACE(0), DEBUG(5), INFO(10), WARN(12), EXCEPTION(15), ERROR(20), NONE(25);
 
         /** An order for level comparison */
         private final int level;
@@ -111,9 +112,27 @@ public class Logger {
         return level.includes(Level.TRACE);
     }
 
+    public void trace(final String s) {
+        if (level.includes(Level.TRACE)) {
+            System.out.println("[TRACE] " + name + "::" + s);
+        }
+    }
+
     public void debug(final String s) {
         if (level.includes(Level.DEBUG)) {
             System.out.println("[DEBUG] " + name + "::" + s);
+        }
+    }
+
+    public void info(final String s) {
+        if (level.includes(Level.INFO)) {
+            System.out.println("[INFO] " + name + "::" + s);
+        }
+    }
+
+    public void warn(final String s) {
+        if (level.includes(Level.WARN)) {
+            System.err.println("[WARN] " + name + "::" + s);
         }
     }
 
@@ -126,15 +145,4 @@ public class Logger {
         }
     }
 
-    public void info(final String s) {
-        if (level.includes(Level.INFO)) {
-            System.out.println("[INFO] " + name + "::" + s);
-        }
-    }
-
-    public void trace(final String s) {
-        if (level.includes(Level.TRACE)) {
-            System.out.println("[TRACE] " + name + "::" + s);
-        }
-    }
 }
