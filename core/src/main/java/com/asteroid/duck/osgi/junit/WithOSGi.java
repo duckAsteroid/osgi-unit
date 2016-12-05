@@ -16,10 +16,10 @@ import static org.junit.Assert.fail;
  * A JUnit rule used to access and control an OSGi Framework
  */
 public class WithOSGi extends ExternalResource {
+    /** the framework */
     private Framework framework = null;
 
     public WithOSGi() {
-
     }
 
     @Override
@@ -55,6 +55,7 @@ public class WithOSGi extends ExternalResource {
 
     @Override
     protected void after() {
+        framework = null;
         super.after();
     }
 

@@ -31,4 +31,5 @@ public interface Constants {
     String LOG_STACK = "osgi-unit.log.stack";
 
     String SYSTEM_PACKAGES = "com.asteroid.duck.osgi.system.packages";
+    String PATH = "path=";
 }

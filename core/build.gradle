@@ -8,6 +8,10 @@ dependencies {
 
 apply plugin: 'osgi'
 
+test {
+    systemProperty 'runtime.bundles', "path=${configurations.testRuntime.asPath}"
+}
+
 jar {
     baseName = 'osgi-unit-core'
 }

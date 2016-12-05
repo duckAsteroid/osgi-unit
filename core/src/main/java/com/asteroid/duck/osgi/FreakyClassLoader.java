@@ -6,11 +6,13 @@ import org.osgi.framework.Bundle;
 import java.util.List;
 
 /**
- * An intercepting class loader - used to load our test classes out of the OSGi framework
+ * An intercepting class loader - used to load our test classes out of the OSGi framework;
+ * I tries to load everything else from the bootstrap classpath
  */
 public class FreakyClassLoader extends ClassLoader {
+    /** Logging */
     private final Logger LOG = Logger.getLogger(FreakyClassLoader.class);
-
+    /** packages to always load from the parent classpath (and throw CNFE if not found) */
     private final List<String> bootClassPackages;
 
     public FreakyClassLoader(final ClassLoader parent) {
@@ -18,6 +20,9 @@ public class FreakyClassLoader extends ClassLoader {
         bootClassPackages = Utils.getBootstrapPackages(getPackages());
     }
 
+    /**
+     * Simply logs the classes
+     */
     @Override
     protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
         if (LOG.isTraceEnabled()) {
@@ -26,6 +31,10 @@ public class FreakyClassLoader extends ClassLoader {
         return super.loadClass(name, resolve);
     }
 
+    /**
+     * Called when a class cannot be found by the parent. If it is a known bootstrap package
+     * then we throw CNFE otherwise we instantiate OSGi and try to load it from there.
+     */
     @Override
     protected Class<?> findClass(final String name) throws ClassNotFoundException {
         String packageName = Utils.getPackageName(name);

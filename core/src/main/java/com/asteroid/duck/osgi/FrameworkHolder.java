@@ -51,15 +51,16 @@ public class FrameworkHolder {
                 // create a framework instance
                 framework = builder.build();
                 LOG.debug("New framework instance created: " + framework);
-                // the name of a file that tells us what bundles to install/start
-                String bundleLocationFile = getRequiredProperty(Constants.RUNTIME_BUNDLES);
-                // read the bundle locations from the file
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(bundleLocationFile)));
-                String line;
+                // these are the bundle locations...
                 LinkedList<String> locations = new LinkedList<String>();
-                while ((line = reader.readLine()) != null) {
-                    locations.add(line);
+                // the name of a file that tells us what bundles to install/start
+                String bundles = getRequiredProperty(Constants.RUNTIME_BUNDLES);
+                if (bundles.startsWith(Constants.PATH)) {
+                    readBundlePath(bundles, locations);
+                } else {
+                    readBundleFile(bundles, locations);
                 }
+
                 // start the framework
                 framework.start();
                 // helper to install and start the bundles
@@ -77,6 +78,24 @@ public class FrameworkHolder {
             } catch (BundleException e) {
                 throw new FrameworkInitialisationException(e);
             }
+        }
+    }
+
+    /** Parse a classpath style path string into a list of bundles */
+    private void readBundlePath(final String bundles, final LinkedList<String> locations) {
+        String path = bundles.substring(Constants.PATH.length());
+        String[] split = path.split(";");
+        for (String element : split) {
+            locations.add(element);
+        }
+    }
+
+    /** Read a file (line per entry) into a list of bundles */
+    private void readBundleFile(final String bundles, final LinkedList<String> locations) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(bundles)));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            locations.add(line);
         }
     }
 

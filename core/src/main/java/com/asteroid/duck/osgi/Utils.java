@@ -15,13 +15,22 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- *
+ * Helper methods and utilites used by the
  */
 public class Utils {
+    /** Logging */
     private static final Logger LOG = Logger.getLogger(Utils.class);
-
+    /** A wildcard package suffix */
     public static final String WILDCARD = ".*";
 
+    /**
+     * Extract all the packages from the given class loader by using reflection to call the
+     * #getPackages() method.
+     *
+     * @param loader the class loader we want the packages for
+     *
+     * @return an array of packages known to that class loader; or empty array.
+     */
     public static Package[] getPackages(ClassLoader loader) {
         try {
             Method getpkgs = ClassLoader.class.getMethod("getPackages", new Class[]{});
@@ -37,6 +46,13 @@ public class Utils {
         return new Package[0];
     }
 
+    /**
+     * Attempt to figure out a list of "bootstrap" package names for the framework, using any of:
+     * 1) the value of the `org.osgi.framework.system.packages` property
+     * 2) the value of the `com.asteroid.duck.osgi.system.packages` property
+     * @param pkgs
+     * @return
+     */
     public static List<String> getBootstrapPackages(Package[] pkgs) {
         ArrayList<String> results = new ArrayList<String>();
         parsePackages(System.getProperty("org.osgi.framework.system.packages", ""), results);
@@ -61,7 +77,7 @@ public class Utils {
         return results;
     }
 
-
+    /** Given a comma separated list of packages, separate them into single packages */
     private static void parsePackages(final String packages, final List<String> results) {
         LOG.debug(packages);
         String[] split = packages.split(",");
@@ -72,10 +88,20 @@ public class Utils {
         }
     }
 
+    /**
+     * Is the given bundle really a "fragment" in OSGi
+     * @param bundle the bundle to test
+     * @return true if a fragment
+     */
     public static boolean isFragment(final Bundle bundle) {
         return getFragmentHost(bundle) != null;
     }
 
+    /**
+     * Get the Fragment-Host of the given bundle (assuming it is a fragment)
+     * @param bundle the fragment bundle
+     * @return the host bundle symbolic name (or null if this is not a fragment)
+     */
     public static String getFragmentHost(final Bundle bundle) {
         return (String) bundle.getHeaders().get(org.osgi.framework.Constants.FRAGMENT_HOST);
     }
@@ -106,6 +132,7 @@ public class Utils {
         return null;
     }
 
+    /** Given a class name - extract the package name */
     public static String getPackageName(final String name) {
         int index = name.lastIndexOf('.');
         if (index > 0) {
@@ -114,6 +141,7 @@ public class Utils {
         return "";
     }
 
+    /** Is this named package in a list of packages (that might include wildcards) */
     public static boolean packageMatch(final List<String> bootClassPackages, final String packageName) {
         if (packageName != null) {
             for (String bootPkg : bootClassPackages) {

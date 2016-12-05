@@ -12,19 +12,20 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
- * A builder for initialising instances of an OSGi {@link Framework}
+ * A builder for creating and initialising instances of an OSGi {@link Framework}
  */
 public class FrameworkBuilder {
 
     /** Configuration properties for the framework */
     private Map<String, String> configuration = new HashMap<>();
 
-
+    /** replaces the configuration with the given one */
     public FrameworkBuilder withConfig(Map<String, String> cfg) {
         this.configuration = cfg;
         return this;
     }
 
+    /** Adds a single property to the configuration */
     public FrameworkBuilder withProperty(String key, String value) {
         if (key != null) {
             if (value == null) {
@@ -35,6 +36,7 @@ public class FrameworkBuilder {
         return this;
     }
 
+    /** adds all the given properties to the configuration */
     public FrameworkBuilder withConfigProperties(Properties props) {
         for (Map.Entry<Object, Object> entry : props.entrySet()) {
             Object key = entry.getKey();
@@ -46,12 +48,14 @@ public class FrameworkBuilder {
         return this;
     }
 
+    /** Reads the properties from a file then uses them */
     public FrameworkBuilder withConfigFile(InputStream stream) throws IOException {
         Properties props = new Properties();
         props.load(stream);
         return withConfigProperties(props);
     }
 
+    /** Create an instance of framework */
     public Framework build() {
         ServiceLoader<FrameworkFactory> loader = ServiceLoader.load(FrameworkFactory.class);
         Iterator<FrameworkFactory> factoryIterator = loader.iterator();

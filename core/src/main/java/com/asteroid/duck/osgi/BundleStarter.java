@@ -36,6 +36,7 @@ public class BundleStarter {
     /**
      * Attempts to install the bundles from the bundle locations
      * @throws IllegalStateException If bundles are already installed
+     * @return the bundles that were installed
      */
     public synchronized List<Bundle> installBundles(List<String> bundleLocations) {
         BundleContext ctx = osgiFramework.getBundleContext();
@@ -64,6 +65,7 @@ public class BundleStarter {
     /**
      * Start all the installed bundles
      * @throws IllegalStateException If the bundles are not installed
+     * @return the bundles that were started
      */
     public synchronized List<Bundle> startBundles(List<Bundle> installed) {
         if (installed == null) {
