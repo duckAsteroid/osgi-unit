@@ -9,8 +9,10 @@ apply plugin: 'osgi'
 
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
+        maven {
+            url "https://dl.bintray.com/osgi-unit/maven"
+        }
     }
     dependencies {
         classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.0'

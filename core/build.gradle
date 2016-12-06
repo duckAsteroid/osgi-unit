@@ -24,7 +24,7 @@ jar {
 
 publishing {
     publications {
-        gradlePlugin(MavenPublication) {
+        gradleCore(MavenPublication) {
             artifactId 'osgi-unit-core'
             from components.java
         }
@@ -35,10 +35,10 @@ bintray {
     user = 'duckasteroid'
     key = "$System.env.BINTRAY_KEY"
     pkg {
-        repo = 'osgi-unit'
+        repo = 'maven'
         name = 'core'
-        userOrg = 'duckasteroid'
-        licenses = ['MIT License']
+        userOrg = 'osgi-unit'
+        licenses = ['MIT']
         vcsUrl = 'https://github.com/duckAsteroid/osgi-unit.git'
         version {
             name = "$project.version"
@@ -46,5 +46,5 @@ bintray {
             vcsTag = "$project.version"
         }
     }
-    publications = ['gradlePlugin']
+    publications = ['gradleCore']
 }

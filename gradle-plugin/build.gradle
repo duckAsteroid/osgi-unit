@@ -1,8 +1,10 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7"
+}
+
 description = 'Gradle build plugin for osgi-unit capable projects'
 
-
 apply plugin: 'groovy'
-
 
 dependencies {
     compile gradleApi()
@@ -18,4 +20,22 @@ publishing {
             from components.java
         }
     }
+}
+
+bintray {
+    user = 'duckasteroid'
+    key = "$System.env.BINTRAY_KEY"
+    pkg {
+        repo = 'maven'
+        name = 'gradle-plugin'
+        userOrg = 'osgi-unit'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/duckAsteroid/osgi-unit.git'
+        version {
+            name = "$project.version"
+            released = new Date()
+            vcsTag = "$project.version"
+        }
+    }
+    publications = ['gradlePlugin']
 }
