@@ -1,3 +1,7 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7"
+}
+
 description = 'OSGi Unit Testing'
 
 dependencies {
@@ -5,6 +9,8 @@ dependencies {
     compile 'org.osgi:org.osgi.core:4.+'
     testRuntime 'org.apache.felix:org.apache.felix.framework:4.2.1'
 }
+
+
 
 apply plugin: 'osgi'
 
@@ -25,3 +31,4 @@ publishing {
     }
 }
 
+println "$System.env.BINTRAY_KEY"
