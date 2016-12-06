@@ -10,13 +10,7 @@ dependencies {
     testRuntime 'org.apache.felix:org.apache.felix.framework:4.2.1'
 }
 
-
-
 apply plugin: 'osgi'
-
-test {
-    systemProperty 'runtime.bundles', "path=${configurations.testRuntime.asPath}"
-}
 
 jar {
     baseName = 'osgi-unit-core'
