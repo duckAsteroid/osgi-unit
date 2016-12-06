@@ -15,10 +15,10 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.0'
+        classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.1'
     }
 }
-apply plugin: 'com.asteroid.duck.osgi.junit'
+apply plugin: 'osgi-unit'
 
 
 repositories {
