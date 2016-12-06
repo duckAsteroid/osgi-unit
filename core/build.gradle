@@ -31,4 +31,20 @@ publishing {
     }
 }
 
-println "$System.env.BINTRAY_KEY"
+bintray {
+    user = 'duckasteroid'
+    key = "$System.env.BINTRAY_KEY"
+    pkg {
+        repo = 'osgi-unit'
+        name = 'core'
+        userOrg = 'duckasteroid'
+        licenses = ['MIT License']
+        vcsUrl = 'https://github.com/duckAsteroid/osgi-unit.git'
+        version {
+            name = "$project.version"
+            released = new Date()
+            vcsTag = "$project.version"
+        }
+    }
+    publications = ['gradlePlugin']
+}
