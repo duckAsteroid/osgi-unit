@@ -37,5 +37,7 @@ bintray {
             vcsTag = "$project.version"
         }
     }
+    publish = true
+    override = true
     publications = ['gradlePlugin']
 }
