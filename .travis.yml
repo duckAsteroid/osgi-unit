@@ -1,6 +1,6 @@
 language: java
 
-script: ./gradlew :core:bintrayUpload
+script: ./gradlew --stacktrace --info :core:bintrayUpload
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
