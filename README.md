@@ -4,7 +4,21 @@ osgi-unit
 Unit testing for OSGi projects in Gradle.
 
 To use the library add the following to your build.gradle:
-   
+    
+    buildscript {
+        repositories {
+            // dependencies from MVN central (you can use others)
+            mavenCentral()
+            maven {
+                // adds the maven repo for this plugin
+                url "https://dl.bintray.com/osgi-unit/maven"
+            }
+        }
+        dependencies {
+            classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.0'
+        }
+    }
+       
     apply plugin: 'com.asteroid.duck.osgi.junit'
    
 This plugin will then let you write JUnit tests in the traditional way
@@ -37,5 +51,4 @@ Ideas
 ------------
 
  * Add a regular JAR wrapper feature that allows all classes in it to be exported in OSGi
- * Add a service rule to acquire/release services during setup/teardown.
  
