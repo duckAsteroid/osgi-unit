@@ -41,6 +41,5 @@ bintray {
         }
     }
     publish = true
-    override = true
     publications = ['gradleCore']
 }
