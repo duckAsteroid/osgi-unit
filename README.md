@@ -52,3 +52,11 @@ Ideas
 
  * Add a regular JAR wrapper feature that allows all classes in it to be exported in OSGi
  
+Build & Release
+----------------
+The project source is maintained on [github.com](https://github.com/duckAsteroid/osgi-unit).
+
+The project build is performed by [Travis-CI](https://travis-ci.org/duckAsteroid/osgi-unit), where the current status is: ![Build Status](https://travis-ci.org/duckAsteroid/osgi-unit.svg?branch=master)
+
+The binaries are available from [bintray.com](https://dl.bintray.com/osgi-unit/maven/)
+ 
