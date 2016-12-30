@@ -1,6 +1,5 @@
 package com.asteroid.duck.example.test;
 
-//import com.asteroid.duck.osgi.junit.WithOSGi;
 import com.asteroid.duck.example.MySimpleService;
 import com.asteroid.duck.osgi.junit.WithOSGi;
 import com.asteroid.duck.osgi.junit.WithOSGiService;
@@ -11,7 +10,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 import org.osgi.framework.launch.Framework;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * An example of how to use OSGi in tests

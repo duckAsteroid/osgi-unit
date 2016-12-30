@@ -1,30 +1,26 @@
 description = 'An example bundle'
 group = 'com.asteroid.duck'
-version='1.0.1'
-apply plugin: 'java'
-
-// The 'main' part of this project is an OSGi bundle
-apply plugin: 'osgi'
-
+version='1.0.2-SNAPSHOT'
 
 buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
-        maven {
-            url "https://dl.bintray.com/osgi-unit/maven"
-        }
     }
     dependencies {
-        classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.2-SNAPSHOT'
+        classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.+'
     }
 }
-apply plugin: 'osgi-unit'
+
+apply plugin: 'java'
+// The 'main' part of this project is an OSGi bundle
+apply plugin: 'osgi'
+apply plugin: 'osgiUnit'
 
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
 }
 
 // the 'test' in this project uses OSGi
@@ -32,6 +28,7 @@ dependencies {
     compile 'org.osgi:org.osgi.core:4.+'
     compile 'commons-collections:commons-collections:3.2'
     testCompile 'junit:junit:4.+'
+    testRuntime 'org.apache.commons:commons-lang3:3.5'
     testFramework 'commons-io:commons-io:2.5'
     testFramework 'org.apache.felix:org.apache.felix.framework:5.4.0'
 }
@@ -46,10 +43,10 @@ jar {
 
 test {
     systemProperty 'felix.cache.locking', false
-    //systemProperty 'osgi-unit.log.default', 'TRACE'
-    systemProperty 'osgi-unit.log.com.asteroid.duck.osgi.junit.WithOSGiService', 'TRACE'
+    systemProperty 'osgi-unit.log.default', 'TRACE'
+    systemProperty 'osgi-unit.log.com.asteroid.duck.osgi.FreakyClassLoader', 'INFO'
 }
 
 osgiUnit {
-    useBundleFile = true
+    useBundleFile = false
 }

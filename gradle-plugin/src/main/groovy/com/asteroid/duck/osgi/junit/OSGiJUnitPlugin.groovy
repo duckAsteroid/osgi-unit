@@ -29,7 +29,7 @@ class OSGiJUnitPlugin implements Plugin<Project> {
         }
 
         // add our plugin to the project
-        project.extensions.create("osgi-unit", OSGiJUnitPluginExtension)
+        project.extensions.create("osgiUnit", OSGiJUnitPluginExtension)
 
         // create the test bundle symbolic name
         def TESTS = 'tests'
@@ -101,7 +101,8 @@ class OSGiJUnitPlugin implements Plugin<Project> {
             // always use a fresh bundle cache
             systemProperty 'org.osgi.framework.storage.clean', 'onFirstInit'
             // packages that are exported by the system (i.e. the classpath that loaded the framework)
-            systemProperty 'org.osgi.framework.system.packages.extra', "org.junit,org.junit.rules,org.junit.runners,org.junit.runners.model,com.asteroid.duck.osgi,com.asteroid.duck.osgi.junit,com.asteroid.duck.osgi.log"
+            systemProperty 'org.osgi.framework.system.packages.extra', "org.junit,org.junit.rules,org.junit.runners,org.junit.runners.model," +
+                    "com.asteroid.duck.osgi; version=${Constants.VERSION},com.asteroid.duck.osgi.junit; version=${Constants.VERSION},com.asteroid.duck.osgi.log; version=${Constants.VERSION}"
         }
     }
 }
@@ -113,5 +114,5 @@ class OSGiJUnitPluginExtension {
      * Should we use a bundle file or path variable to pass list of bundles to osgi-unit runtime.
      * The bundle file (in build dir) can be useful for debug
      */
-    boolean useBundleFile = false;
+    boolean useBundleFile = false
 }

@@ -14,6 +14,9 @@ apply plugin: 'osgi'
 
 jar {
     baseName = 'osgi-unit-core'
+    manifest {
+        instructionReplace 'Bundle-Name', "$project.description"
+    }
 }
 
 publishing {

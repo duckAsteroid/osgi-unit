@@ -25,8 +25,8 @@ class ExportOSGiBundlesTask extends DefaultTask {
 
         // add each JAR from testRuntime configuration - but not those in the framework
         def bundles = project.configurations.testRuntime - project.configurations.testFramework
-        bundles.each {
-            pathTxt += path + "\n"
+        bundles.each { File bundle ->
+            pathTxt += bundle.absolutePath + "\n"
         }
 
         outputFile.text = pathTxt
