@@ -90,7 +90,9 @@ class OSGiJUnitPlugin implements Plugin<Project> {
             dependsOn project.export
             // we need to pass the exported runtime JARs (file) to our bootstrap code
             systemProperty Constants.RUNTIME_BUNDLES, exportedRuntimeClasspath
+            // we also need to tell it which bundle contains our tests
             systemProperty Constants.TEST_BUNDLE, testBSN
+            // and which packages our classloader should ignore...
             systemProperty Constants.SYSTEM_PACKAGES, "sun.*,com.asteroid.duck.osgi.*"
             // use our classloader (to find test classes and friends)
             systemProperty 'java.system.class.loader', 'com.asteroid.duck.osgi.FreakyClassLoader'
@@ -99,11 +101,17 @@ class OSGiJUnitPlugin implements Plugin<Project> {
             // always use a fresh bundle cache
             systemProperty 'org.osgi.framework.storage.clean', 'onFirstInit'
             // packages that are exported by the system (i.e. the classpath that loaded the framework)
-            systemProperty 'org.osgi.framework.system.packages.extra', "org.junit,org.junit.rules,org.junit.runners,org.junit.runners.model,com.asteroid.duck.osgi; version=${Constants.VERSION},com.asteroid.duck.osgi.junit; version=${Constants.VERSION},com.asteroid.duck.osgi.log; version=${Constants.VERSION}"
+            systemProperty 'org.osgi.framework.system.packages.extra', "org.junit,org.junit.rules,org.junit.runners,org.junit.runners.model,com.asteroid.duck.osgi,com.asteroid.duck.osgi.junit,com.asteroid.duck.osgi.log"
         }
     }
 }
-
+/**
+ * osgi-unit extension to the project model
+ */
 class OSGiJUnitPluginExtension {
-    String message
+    /**
+     * Should we use a bundle file or path variable to pass list of bundles to osgi-unit runtime.
+     * The bundle file (in build dir) can be useful for debug
+     */
+    boolean useBundleFile = false;
 }

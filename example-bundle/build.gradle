@@ -10,12 +10,13 @@ apply plugin: 'osgi'
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
         maven {
             url "https://dl.bintray.com/osgi-unit/maven"
         }
     }
     dependencies {
-        classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.1'
+        classpath 'com.asteroid.duck:osgi-unit-gradle:1.0.2-SNAPSHOT'
     }
 }
 apply plugin: 'osgi-unit'
@@ -29,7 +30,9 @@ repositories {
 // the 'test' in this project uses OSGi
 dependencies {
     compile 'org.osgi:org.osgi.core:4.+'
+    compile 'commons-collections:commons-collections:3.2'
     testCompile 'junit:junit:4.+'
+    testFramework 'commons-io:commons-io:2.5'
     testFramework 'org.apache.felix:org.apache.felix.framework:5.4.0'
 }
 
@@ -45,4 +48,8 @@ test {
     systemProperty 'felix.cache.locking', false
     //systemProperty 'osgi-unit.log.default', 'TRACE'
     systemProperty 'osgi-unit.log.com.asteroid.duck.osgi.junit.WithOSGiService', 'TRACE'
+}
+
+osgiUnit {
+    useBundleFile = true
 }
