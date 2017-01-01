@@ -30,6 +30,7 @@ sourceSets {
             compileClasspath += sourceSets.api.runtimeClasspath
         }
     }
+    // test depends on api at compile and runtime
     test {
         java {
             compileClasspath += sourceSets.api.runtimeClasspath
@@ -42,6 +43,32 @@ jar {
     manifest {
         instructionReplace 'Bundle-Activator', 'com.asteroid.duck.example.impl.Activator'
         instructionReplace 'Bundle-Name', "$project.description"
-        instruction 'Private-Package', 'com.asteroid.duck.example.impl'
+        instructionReplace 'Private-Package', 'com.asteroid.duck.example.impl'
+    }
+}
+
+// add another JAR for the API
+task apiJar(type: Jar) {
+    manifest {
+        // custom OSGi manifest
+        attributes("Bundle-SymbolicName": "com.asteroid.duck.example-service.api",
+                "Bundle-Vesion": "$project.version",
+                "Export-Package": "com.asteroid.duck.osgi.example.underworld")
+    }
+    classifier = 'api'
+    from sourceSets.api.output
+}
+
+// publish API and IMPL to Maven
+publishing {
+    publications {
+        impl(MavenPublication) {
+            artifactId 'osgi-example-service'
+            from components.java
+        }
+        api(MavenPublication) {
+            artifactId 'osgi-example-service-api'
+            artifact apiJar
+        }
     }
 }
