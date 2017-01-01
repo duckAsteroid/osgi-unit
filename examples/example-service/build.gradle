@@ -1,0 +1,47 @@
+description = 'Example OSGi service'
+group = 'com.asteroid.duck'
+version='1.0.2-SNAPSHOT'
+
+apply plugin: 'java'
+// The 'main' part of this project is an OSGi bundle
+apply plugin: 'osgi'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+// the 'test' in this project uses OSGi
+dependencies {
+    compile 'org.osgi:org.osgi.core:4.+'
+    compile 'commons-io:commons-io:2.4'
+}
+
+// set up a separate source folder for the API vs. the IMPL
+sourceSets {
+    api {
+        java {
+            srcDir 'src/api/java'
+        }
+    }
+    // IMPL depends on the API
+    main {
+        java {
+            compileClasspath += sourceSets.api.runtimeClasspath
+        }
+    }
+    test {
+        java {
+            compileClasspath += sourceSets.api.runtimeClasspath
+            runtimeClasspath += sourceSets.api.runtimeClasspath
+        }
+    }
+}
+
+jar {
+    manifest {
+        instructionReplace 'Bundle-Activator', 'com.asteroid.duck.example.impl.Activator'
+        instructionReplace 'Bundle-Name', "$project.description"
+        instruction 'Private-Package', 'com.asteroid.duck.example.impl'
+    }
+}
