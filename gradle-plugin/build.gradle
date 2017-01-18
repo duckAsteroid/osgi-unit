@@ -37,6 +37,10 @@ bintray {
             vcsTag = "$project.version"
         }
     }
+    // Whether version should be auto published after an upload
     publish = true
+    // Whether to override version artifacts already published
+    override = true
+
     publications = ['gradlePlugin']
 }

@@ -13,7 +13,7 @@ public interface Constants {
     /** Artifact ID for this JAR */
     String ARTIFACT = "osgi-unit-core";
     /** Version number of this and the plugin */
-    String VERSION = "1.0.2";
+    String VERSION = "1.0.3";
     /** Fuzzy version for dependencies in the test bundle */
     String FUZZY_VERSION = VERSION.substring(0, 4) + "+";
     /** Gradle (maven) co-ordinates of the core artifact */
