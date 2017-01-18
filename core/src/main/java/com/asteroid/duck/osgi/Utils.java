@@ -82,6 +82,7 @@ public class Utils {
         LOG.debug(packages);
         String[] split = packages.split(",");
         for (String s : split) {
+            // walk them to eradicate empty or null entries
             if (s != null && s.length() > 0) {
                 results.add(s);
             }

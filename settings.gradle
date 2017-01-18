@@ -1,4 +1,2 @@
 include ':core'
 include ':gradle-plugin'
-include ':examples:example-service'
-//include ':example-bundle'

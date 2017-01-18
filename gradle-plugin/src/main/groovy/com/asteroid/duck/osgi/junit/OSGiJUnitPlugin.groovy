@@ -28,7 +28,7 @@ class OSGiJUnitPlugin implements Plugin<Project> {
             }
         }
 
-        // add our plugin to the project
+        // add our plugin extension to the project
         project.extensions.create("osgiUnit", OSGiJUnitPluginExtension)
 
         // create the test bundle symbolic name
@@ -66,7 +66,7 @@ class OSGiJUnitPlugin implements Plugin<Project> {
         }
         // Configure the test task to make it run in OSGi...
         project.test {
-            def osgiCacheDir = new File(project.buildDir, 'osgi-cache')
+            def osgiCacheDir = new File(project.buildDir, project.osgiUnit.osgiCacheDirName)
             // the classpath for testing is now only the OSGi framework piece
             doFirst {
                 String classpathDebug = 'Replacing classpath:=\n'
@@ -94,14 +94,19 @@ class OSGiJUnitPlugin implements Plugin<Project> {
             systemProperty Constants.TEST_BUNDLE, testBSN
             // and which packages our classloader should ignore...
             systemProperty Constants.SYSTEM_PACKAGES, "sun.*,com.asteroid.duck.osgi.*"
-            // use our classloader (to find test classes and friends)
+            // we need to tell the VM to use our classloader (to find test classes and friends)
             systemProperty 'java.system.class.loader', 'com.asteroid.duck.osgi.FreakyClassLoader'
             // use a folder inside the /build directory for the OSGi bundle cache
             systemProperty 'org.osgi.framework.storage', osgiCacheDir.absolutePath
             // always use a fresh bundle cache
             systemProperty 'org.osgi.framework.storage.clean', 'onFirstInit'
-            // packages that are exported by the system (i.e. the classpath that loaded the framework)
-            systemProperty 'org.osgi.framework.system.packages.extra', "org.junit,org.junit.rules,org.junit.runners,org.junit.runners.model," +
+            // define packages that are exported by the system (i.e. the classpath that loaded the OSGi framework)
+            systemProperty 'org.osgi.framework.system.packages.extra',
+                    // junit
+                    "org.junit,org.junit.rules,org.junit.runners,org.junit.runners.model," +
+                    // hamcrest (Junit still)
+                    "org.hamcrest,org.hamcrest.core," +
+                    // our libraries
                     "com.asteroid.duck.osgi; version=${Constants.VERSION},com.asteroid.duck.osgi.junit; version=${Constants.VERSION},com.asteroid.duck.osgi.log; version=${Constants.VERSION}"
         }
     }
@@ -115,4 +120,8 @@ class OSGiJUnitPluginExtension {
      * The bundle file (in build dir) can be useful for debug
      */
     boolean useBundleFile = false
+    /**
+     * The name of the OSGi bundle cache folder created inside the /build directory
+     */
+    String osgiCacheDirName = 'osgi-cache'
 }

@@ -25,7 +25,7 @@ public class MySimpleServiceTest {
     public WithOSGiService<MySimpleService> service = new WithOSGiService<MySimpleService>(MySimpleService.class);
 
     @Test
-    public void testOsgiRule() throws Exception {
+    public void testWithOsgi_Rule() throws Exception {
         // validate framework
         {
             Framework framework = osgi.getFramework();
@@ -50,11 +50,14 @@ public class MySimpleServiceTest {
     }
 
     @Test
-    public void testOsgiServiceRule() throws Exception {
+    public void testWithOsgiService_Rule() throws Exception {
         MySimpleService serviceInstance = service.getServiceInstance();
         checkService(serviceInstance);
     }
 
+    /**
+     * Reusable code to check the service instance is good
+     */
     private static void checkService(MySimpleService instance) {
         assertNotNull(instance);
         String greeting = instance.getGreeting();
