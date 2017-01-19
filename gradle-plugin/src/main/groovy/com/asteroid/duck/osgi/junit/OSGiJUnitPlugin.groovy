@@ -50,6 +50,9 @@ class OSGiJUnitPlugin implements Plugin<Project> {
                     classpath = project.sourceSets.test.runtimeClasspath
                 instructionReplace 'Bundle-Description', "JUnit tests for :- " + project.description
                 instructionReplace 'Bundle-SymbolicName', testBSN
+                if (project.osgiUnit.useFragment) {
+                    instructionReplace 'Fragment-Host', project.jar.manifest.getSymbolicName()
+                }
             }
         }
 
@@ -124,4 +127,8 @@ class OSGiJUnitPluginExtension {
      * The name of the OSGi bundle cache folder created inside the /build directory
      */
     String osgiCacheDirName = 'osgi-cache'
+    /**
+     * Create the test bundle as a Fragment of this projects bundle
+     */
+    boolean useFragment = true
 }

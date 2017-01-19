@@ -1,4 +1,4 @@
-package com.asteroid.duck.example.test;
+package com.asteroid.duck.example;
 
 import com.asteroid.duck.example.MySimpleService;
 import com.asteroid.duck.osgi.junit.WithOSGi;

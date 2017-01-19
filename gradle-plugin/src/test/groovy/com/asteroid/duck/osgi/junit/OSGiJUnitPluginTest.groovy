@@ -11,8 +11,9 @@ class OSGiJUnitPluginTest {
 
     @Test
     public void osgiJunitPluginAddsTaskToProject() {
-        Project project = ProjectBuilder.builder().build();
+        Project project = ProjectBuilder.builder().build()
         project.pluginManager.apply 'java'
         project.pluginManager.apply 'com.asteroid.duck.osgi.junit'
+
     }
 }
