@@ -26,7 +26,7 @@ repositories {
 // the 'test' in this project uses OSGi
 dependencies {
     compile 'org.osgi:org.osgi.core:4.+'
-    compile 'commons-collections:commons-collections:3.2'
+    compile 'commons-collections:commons-collections:3.2.2'
     testCompile 'junit:junit:4.+'
     testRuntime 'org.apache.commons:commons-lang3:3.5'
     testFramework 'commons-io:commons-io:2.5'
